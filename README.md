@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Reading List
 
-## Getting Started
+A small web app for searching books and tracking what you read. Search the Open Library catalog, view book details, and organize books into To Read, Reading and Finished shelves.
 
-First, run the development server:
+## Tech stack
+
+- Next.js 16 (App Router) and TypeScript
+- Plain CSS
+- Open Library API (no API key needed)
+- React Context with localStorage for the reading list
+- jose for the signed session cookie
+- Vitest and React Testing Library for unit tests
+
+## Features
+
+- **Login** with a demo account, protected routes and logout
+- **Search** books by title or author, with loading, error and empty states and a "Load more" button
+- **Book detail** page with cover, author, year, description and subjects
+- **My List** with three tabs (To Read, Reading, Finished). Books can be moved between tabs or removed, and the list is saved in the browser
+
+## Getting started
+
+Requirements: Node.js 20 or newer.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Demo login
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Username: `demo`
+- Password: `reading123`
 
-## Learn More
+### Other scripts
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm test        # run unit tests
+npm run build   # production build
+npm start       # run the production build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+app/
+  (protected)/        pages behind login (search, list, book/[id])
+  api/                login and logout routes
+  login/              login page
+components/           navbar, bookcard
+context/              reading list state
+lib/                  auth helpers, Open Library client
+proxy.ts              redirects logged-out users to /login
+__tests__/            unit tests
+```
 
-## Deploy on Vercel
+## Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- The session secret falls back to a built-in demo value so the app runs without any setup. Set `AUTH_SECRET` in a `.env.local` file to use your own.
+- The reading list is stored in localStorage, so it is per browser and is not shared between users.
